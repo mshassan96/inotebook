@@ -77,4 +77,20 @@ const updateNote = async (req, res) => {
   }
 };
 
-module.exports = { getAllNotes, addNote, updateNote, validationAddNote };
+const deleteNote = async (req, res) => {
+  try {
+    let note = await Note.findById({ _id: req.params.id });
+
+    if (!note) return res.status(404).send("Record Not Found");
+
+    if (note.user.toString() !== req.user.id) return res.status(401).send("Not Allowed");
+
+    const deletedNote = await Note.findOneAndDelete({ _id: req.params.id });
+    res.json({"Success": "Note Deleted", deletedNote});
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Internal Server Error.");
+  }
+};
+
+module.exports = { getAllNotes, addNote, updateNote, validationAddNote, deleteNote };
