@@ -12,11 +12,11 @@ const getAllNotes = async (req, res) => {
 };
 
 const validationAddNote = [
-  body("title", "Enter a valid title").isLength({ min: 5 }),
+  body("title", "Enter a valid title with atleast 2 letters.").isLength({ min: 2 }),
   body(
     "description",
-    "Enter a valid description with atleast 10 characters."
-  ).isLength({ min: 10 }),
+    "Enter a valid description with atleast 5 characters."
+  ).isLength({ min: 5 }),
 ];
 
 const addNote = async (req, res) => {

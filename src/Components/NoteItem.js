@@ -1,14 +1,28 @@
-import { Button, Card } from "react-bootstrap";
+import { useContext } from "react";
+import { Card } from "react-bootstrap";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import NoteContext from "../contexts/notes/noteContext";
 
 const NoteItem = ({ note }) => {
+
+  const { updateNote, deleteNote } = useContext(NoteContext);
+  
+  const handleUpdateNote = noteId => !!noteId && updateNote(noteId, "title", "description", "tag");
+    
+  const handleDeleteNote = noteId => !!noteId && deleteNote(noteId);
+
   return (
     <div className="col-md-3">
-      <Card bg="info" text="white" className="my-2">
+      <Card border="warning" text="dark" className="my-2">
         <Card.Body>
           <Card.Title>{note.title}</Card.Title>
           <Card.Text>{note.description}</Card.Text>
           <Card.Footer>
-            <small className="text-muted">{note.tag}</small>
+            <div className="d-flex">
+              <small className="text-muted mr-auto">{note.tag}</small>
+              <AiOutlineDelete className="icon mx-1" style={{cursor: "pointer"}} onClick={() => handleDeleteNote(note._id)}/>
+              <AiOutlineEdit className="icon mx-1" style={{cursor: "pointer"}} onClick={() => handleUpdateNote(note._id)} />
+            </div>
           </Card.Footer>
         </Card.Body>
       </Card>
