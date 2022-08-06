@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
     // Check if the user with same email exists already
     let user = await User.findOne({ email: req.body.email });
     if (user) {
-      return res.status(400).json({ error: "Duplicate email id." });
+      return res.status(400).json({ error: "User already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);

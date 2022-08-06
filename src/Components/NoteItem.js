@@ -3,13 +3,12 @@ import { Card } from "react-bootstrap";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import NoteContext from "../contexts/notes/noteContext";
 
-const NoteItem = ({ note }) => {
+const NoteItem = ({ note, editNote }) => {
+  const { deleteNote } = useContext(NoteContext);
 
-  const { updateNote, deleteNote } = useContext(NoteContext);
-  
-  const handleUpdateNote = noteId => !!noteId && updateNote(noteId, "title", "description", "tag");
-    
-  const handleDeleteNote = noteId => !!noteId && deleteNote(noteId);
+  const handleUpdateNote = (noteId) => !!noteId && editNote(noteId);
+
+  const handleDeleteNote = (noteId) => !!noteId && deleteNote(noteId);
 
   return (
     <div className="col-md-3">
@@ -20,8 +19,16 @@ const NoteItem = ({ note }) => {
           <Card.Footer>
             <div className="d-flex">
               <small className="text-muted mr-auto">{note.tag}</small>
-              <AiOutlineDelete className="icon mx-1" style={{cursor: "pointer"}} onClick={() => handleDeleteNote(note._id)}/>
-              <AiOutlineEdit className="icon mx-1" style={{cursor: "pointer"}} onClick={() => handleUpdateNote(note._id)} />
+              <AiOutlineDelete
+                className="icon mx-1"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleDeleteNote(note._id)}
+              />
+              <AiOutlineEdit
+                className="icon mx-1"
+                style={{ cursor: "pointer" }}
+                onClick={() => handleUpdateNote(note._id)}
+              />
             </div>
           </Card.Footer>
         </Card.Body>

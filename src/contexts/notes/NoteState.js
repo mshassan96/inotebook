@@ -10,7 +10,7 @@ const NoteState = ({ children }) => {
 
   // Fetch All Notes
   const getNotes = async () => {
-    const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+    const response = await fetch(`${host}/api/notes`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const NoteState = ({ children }) => {
 
   // Add New Note
   const addNote = async (newNote) => {
-    const response = await fetch(`${host}/api/notes/addnote`, {
+    const response = await fetch(`${host}/api/notes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,15 +36,14 @@ const NoteState = ({ children }) => {
     });
 
     const jsonResponse = await response.json();
-    setNotes([...notes, newNote]);
+    setNotes([...notes, jsonResponse]);
 
     return jsonResponse;
   };
 
   // Edit existing Note
   const updateNote = async (noteId, title, description, tag) => {
-    console.log(noteId, title, description, tag);
-    const response = await fetch(`${host}/api/notes/updatenote/${noteId}`, {
+    const response = await fetch(`${host}/api/notes/${noteId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +54,7 @@ const NoteState = ({ children }) => {
     const jsonResponse = await response.json();
     setNotes(
       notes.map((note) =>
-        note._id === noteId ? { title, description, tag } : note
+        note._id === noteId ? { ...note, title, description, tag } : note
       )
     );
 
@@ -64,7 +63,7 @@ const NoteState = ({ children }) => {
 
   // Delete existing Note
   const deleteNote = async (noteId) => {
-    const response = await fetch(`${host}/api/notes/deletenote/${noteId}`, {
+    const response = await fetch(`${host}/api/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -79,12 +78,18 @@ const NoteState = ({ children }) => {
     return jsonResponse;
   };
 
+  // Fetch Note By Id
+  const getNoteById = noteId => {
+    return notes?.find(note => note._id === noteId);
+  }
+
   const contextValue = {
     notes,
     addNote,
     getNotes,
     updateNote,
     deleteNote,
+    getNoteById,
   };
 
   return (
