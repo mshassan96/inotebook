@@ -1,13 +1,12 @@
 import { Alert } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import About from "./Components/About";
-import Home from "./Components/Home";
 import Navbar from "./Components/Navbar";
 import NoteProvider from "./contexts/notes/NoteState";
+import routes from "./routes/routes";
 
 function App() {
-  const alertMessage = '';
-  
+  const alertMessage = "";
+
   return (
     <>
       <NoteProvider>
@@ -16,8 +15,14 @@ function App() {
           {false && <Alert variant="info">{alertMessage}</Alert>}
           <div className="container">
             <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route exact path="/about" element={<About />} />
+              {routes.map((route, idx) => (
+                <Route
+                  path={route.path}
+                  element={<route.component />}
+                  key={idx}
+                  exact
+                />
+              ))}
             </Routes>
           </div>
         </Router>

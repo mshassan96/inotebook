@@ -12,7 +12,9 @@ const getAllNotes = async (req, res) => {
 };
 
 const validationAddNote = [
-  body("title", "Enter a valid title with atleast 2 letters.").isLength({ min: 2 }),
+  body("title", "Enter a valid title with atleast 2 letters.").isLength({
+    min: 2,
+  }),
   body(
     "description",
     "Enter a valid description with atleast 5 characters."
@@ -83,14 +85,21 @@ const deleteNote = async (req, res) => {
 
     if (!note) return res.status(404).send("Record Not Found");
 
-    if (note.user.toString() !== req.user.id) return res.status(401).send("Not Allowed");
+    if (note.user.toString() !== req.user.id)
+      return res.status(401).send("Not Allowed");
 
     const deletedNote = await Note.findOneAndDelete({ _id: req.params.id });
-    res.json({"Success": "Note Deleted", deletedNote});
+    res.json({ Success: "Note Deleted", deletedNote });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error.");
   }
 };
 
-module.exports = { getAllNotes, addNote, updateNote, validationAddNote, deleteNote };
+module.exports = {
+  getAllNotes,
+  addNote,
+  updateNote,
+  validationAddNote,
+  deleteNote,
+};

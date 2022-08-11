@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Note = require("../models/Note");
 const fetchuser = require("../middleware/fetchuser");
-const { getAllNotes, addNote, updateNote, validationAddNote, deleteNote } = require("../controllers/notes");
+const {
+  getAllNotes,
+  addNote,
+  updateNote,
+  validationAddNote,
+  deleteNote,
+} = require("../controllers/notes");
 
 // ROUTE 1: Fetch all notes using: GET "api/notes". Login required
 router.get("/", fetchuser, getAllNotes);

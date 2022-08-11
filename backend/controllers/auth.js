@@ -19,14 +19,15 @@ const createUser = async (req, res) => {
   // If there are errors, return Bad request and the errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ success, errors: errors.array() });
   }
 
   try {
     // Check if the user with same email exists already
+    let success = false;
     let user = await User.findOne({ email: req.body.email });
     if (user) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({ success, error: "User already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -45,7 +46,7 @@ const createUser = async (req, res) => {
     };
 
     const authToken = jwt.sign(data, JWT_SECRET);
-    res.json({ authToken });
+    res.json({ success: true, authToken });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
@@ -63,13 +64,18 @@ const loginUser = async (req, res) => {
   try {
     // Check if the user with same email exists already
     let user = await User.findOne({ email });
+    let success = false;
     if (!user) {
-      return res.status(400).json({ error: "Please input correct details." });
+      return res
+        .status(400)
+        .json({ success, error: "Please input correct details." });
     }
 
     const passwordCompare = bcrypt.compare(password, user.password);
     if (!passwordCompare) {
-      return res.status(400).json({ error: "Please input correct details." });
+      return res
+        .status(400)
+        .json({ success, error: "Please input correct details." });
     }
 
     const data = {
@@ -79,7 +85,8 @@ const loginUser = async (req, res) => {
     };
 
     const authToken = jwt.sign(data, JWT_SECRET);
-    return res.json({ authToken });
+    success = true;
+    return res.json({ success, authToken });
   } catch (error) {
     console.error(error.message);
     return res.status(500).send("Internal Server Error");
@@ -107,5 +114,5 @@ module.exports = {
   validationCreateUser,
   loginUser,
   validationLoginUser,
-  getUser
+  getUser,
 };
