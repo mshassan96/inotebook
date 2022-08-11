@@ -1,7 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   let location = useLocation();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
@@ -39,12 +45,24 @@ const Navbar = () => {
           </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
-          <Link to="/login" className="btn btn-outline-success mx-2 my-sm-0">
-            Login
-          </Link>
-          <Link to="/signup" className="btn btn-outline-success mx-2 my-sm-0">
-            SignUp
-          </Link>
+          {localStorage.getItem("authToken") ? (
+            <Button onClick={handleLogout}>Logout</Button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="btn btn-outline-success mx-2 my-sm-0"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="btn btn-outline-success mx-2 my-sm-0"
+              >
+                SignUp
+              </Link>
+            </>
+          )}
         </form>
       </div>
     </nav>

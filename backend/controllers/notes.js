@@ -89,7 +89,7 @@ const deleteNote = async (req, res) => {
       return res.status(401).send("Not Allowed");
 
     const deletedNote = await Note.findOneAndDelete({ _id: req.params.id });
-    res.json({ Success: "Note Deleted", deletedNote });
+    res.json({ success: true, deletedNote });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error.");

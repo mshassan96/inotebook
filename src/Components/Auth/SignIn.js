@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = () => {
+const SignIn = ({ showAlert }) => {
   const url = "http://localhost:5000/api/auth/login";
   const navigate = useNavigate();
   const userSignIn = async (user) => {
@@ -27,8 +27,9 @@ const SignIn = () => {
     if (res.success) {
       localStorage.setItem("authToken", res.authToken);
       navigate("/");
+      showAlert("Logged In Successfully.");
     } else {
-      // SHOW ERRORS IN ALERT
+      showAlert("Error: Invalid Request.", "danger");
     }
   };
   return (

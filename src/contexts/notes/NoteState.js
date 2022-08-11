@@ -3,9 +3,7 @@ import NoteContext from "./noteContext";
 
 const NoteState = ({ children }) => {
   const host = "http://localhost:5000";
-  const authToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkMDg1MmU5ZjhlZDFmOGM3YzViZWI3In0sImlhdCI6MTY1Nzg4MzE1OX0.08uSa4w7-W5rs5wpPR091lm8Kd06BBbhz5CBuFJovhU";
-
+  const authToken = localStorage.getItem("authToken");
   const [notes, setNotes] = useState();
 
   // Fetch All Notes
@@ -73,15 +71,16 @@ const NoteState = ({ children }) => {
 
     const jsonResponse = await response.json();
 
-    (!!jsonResponse.Success) && setNotes(notes.filter((note) => note._id !== noteId));
+    !!jsonResponse.success &&
+      setNotes(notes.filter((note) => note._id !== noteId));
 
     return jsonResponse;
   };
 
   // Fetch Note By Id
-  const getNoteById = noteId => {
-    return notes?.find(note => note._id === noteId);
-  }
+  const getNoteById = (noteId) => {
+    return notes?.find((note) => note._id === noteId);
+  };
 
   const contextValue = {
     notes,

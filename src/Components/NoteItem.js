@@ -3,12 +3,19 @@ import { Card } from "react-bootstrap";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import NoteContext from "../contexts/notes/noteContext";
 
-const NoteItem = ({ note, editNote }) => {
+const NoteItem = ({ note, editNote, showAlert }) => {
   const { deleteNote } = useContext(NoteContext);
 
   const handleUpdateNote = (noteId) => !!noteId && editNote(noteId);
 
-  const handleDeleteNote = (noteId) => !!noteId && deleteNote(noteId);
+  const handleDeleteNote = async (noteId) => {
+    if (!!noteId) {
+      const response = await deleteNote(noteId);
+      if (response.success) {
+        showAlert("Note Deleted");
+      }
+    }
+  };
 
   return (
     <div className="col-md-3">

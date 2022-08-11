@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import NoteContext from "../contexts/notes/noteContext";
 
-const UpdateNote = ({ show, editNoteId, handleClose }) => {
+const UpdateNote = ({ show, editNoteId, handleClose, showAlert }) => {
   const { updateNote, getNoteById } = useContext(NoteContext);
   const [note, setNote] = useState({
     title: "",
@@ -19,6 +19,7 @@ const UpdateNote = ({ show, editNoteId, handleClose }) => {
     e.preventDefault();
     updateNote(editNoteId, note.title, note.description, note.tag);
     handleClose();
+    showAlert("Note Edited.");
   };
 
   useEffect(() => {

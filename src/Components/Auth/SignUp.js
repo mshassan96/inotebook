@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const SignUp = ({ showAlert }) => {
   const url = "http://localhost:5000/api/auth/user";
   const navigate = useNavigate();
   const userSignUp = async (user) => {
@@ -25,8 +25,9 @@ const SignUp = () => {
     if (response.success) {
       localStorage.setItem("authToken", response.authToken);
       navigate("/");
+      showAlert("Account created Successfully.");
     } else {
-      alert("invalid");
+      showAlert("Invalid Request.", "danger");
     }
   };
   return (
